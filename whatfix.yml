@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whatfix-enduser-api
-  namespace: git
+  namespace: testbranch
 spec:
   replicas: 4
   revisionHistoryLimit: 4

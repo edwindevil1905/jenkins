@@ -7,8 +7,7 @@ spec:
   selector:
     app: whatfix-enduser-api-app
   ports:
-    - port: 32000
-      nodeport: 80
+    - port: 80
       targetPort: 80
   type: LoadBalancer
   externalIPs:

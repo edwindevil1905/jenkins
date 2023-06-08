@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatfix-enduser-api
+  namespace: nginx
+spec:
+  replicas: 4
+  revisionHistoryLimit: 4
+  selector:
+    matchLabels:
+      app: whatfix-enduser-api-app
+  template:
+    metadata:
+      labels:
+        app: whatfix-enduser-api-app
+    spec:
+      containers:
+      - name: nginx
+        image:  edwinkerk/edinginx
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80

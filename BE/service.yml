@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: a360-backend
+  name: a360-backend-service
+spec:
+  selector:
+    app: a360-backend
+  ports:
+    - protocol: TCP
+      port: 8079
+      targetPort: 8079

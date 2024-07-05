@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: a360-backend-route
+spec:
+  host: apps.advisor360.c8a360.com
+  path: /backend
+  to:
+    kind: Service
+    name: a360-backend-service
+    weight: 100
+  port:
+    targetPort: 8079
+  tls:
+    termination: edge

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: a360-backend
+  name: a360-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: a360-backend
+  template:
+    metadata:
+      labels:
+        app: a360-backend
+    spec:
+      securityContext:
+        runAsUser: 1001020000
+        runAsGroup: 1001020000
+      containers:
+        - image: mascmts/a360-backend:latest
+          name: a360-backend
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: a360-mysql-secret
+            - secretRef:
+                name: a360-backend-secret
+          ports:
+            - containerPort: 8079
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
+          livenessProbe:
+            httpGet:
+              path: /backend/actuator/health
+              port: 8079
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /backend/actuator/health
+              port: 8079
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+

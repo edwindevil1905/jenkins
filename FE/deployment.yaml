@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: a360-frontend
+  name: a360-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: a360-frontend
+  template:
+    metadata:
+      labels:
+        app: a360-frontend
+    spec:
+      securityContext:
+        runAsUser: 1001020000
+        runAsGroup: 1001020000
+      containers:
+        - image: mascmts/a360-frontend:latest
+          name: a360-frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            timeoutSeconds: 10
+            initialDelaySeconds: 20
+          livenessProbe:
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ls
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/appConfig.js
+              subPath: appConfig.js
+      volumes:
+        - name: config-volume
+          configMap:
+            name: a360-frontend-config
